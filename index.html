@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form action="">
+
+        <div>
+            <label for="idMoeda">Escolha a moeda</label>
+            <select name="nmMoeda" id="idMoeda">
+                <option value="AUD">Dólar australiano</option>
+                <option value="CAD">Dólar canadense</option>
+                <option value="CHF">Franco suíço</option>
+                <option value="DKK">Coroa dinamarquesa</option>
+                <option value="EUR">Euro</option>
+                <option value="GBP">Libra Esterlina</option>
+                <option value="JPY">Iene</option>
+                <option value="NOK">Coroa norueguesa</option>
+                <option value="SEK">Coroa sueca</option>
+                <option value="USD">Dólar dos Estados Unidos</option>
+            </select>
+        </div>
+        <div>
+            <label for="idData">Escolha a data</label>
+            <input type="text" id="idData" name="nmDaata" placeholder="Formato: MM-DD-AAAA">
+        </div>
+        <div>
+            <input type="button" value="Resultado" id="idBtResultado">
+        </div>
+
+
+    </form>
+    <script>
+
+        var btBuscarMoeda = document.getElementById("idBtResultado")
+
+        btBuscarMoeda.onclick = function(){
+            let moeda = document.getElementById("idMoeda").value
+            let data = document.getElementById("idData").value
+            buscarMoeda(moeda, data)
+            console.log(moeda);
+            console.log(data);
+        }
+
+
+        function buscarMoeda(moeda, data) {
+ 
+            var xhr = new XMLHttpRequest(); 
+
+            xhr.open("GET", "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaDia(moeda=@moeda,dataCotacao=@dataCotacao)?@moeda='" + moeda + " '&@dataCotacao='" + data + "'&$top=100&$format=json&$select=paridadeCompra,paridadeVenda,cotacaoCompra,cotacaoVenda,dataHoraCotacao,tipoBoletim")
+
+            xhr.addEventListener("load", function(){
+            var resposta = xhr.responseText;
+            imprimirMoeda(resposta)
+            })
+    
+            xhr.send()
+
+        }
+
+        function imprimirMoeda(resposta) {
+            console.log(resposta);
+        }
+
+    </script>
+</body>
+</html>
+
